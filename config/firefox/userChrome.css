@@ -1,0 +1,221 @@
+/* --- Minor tweaks --- */
+
+
+
+/* Make fake separator and real separator identical */
+#vertical-pinned-tabs-container-separator {
+  margin: 6px auto !important;
+  background: white !important;
+  opacity: 0.2 !important;
+}
+
+/* Essentials */
+#zen-essentials-container {
+  /* Enforce 3x2 grid */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, max(var(--tab-pinned-min-width-expanded), 30%)), 1fr)) !important;
+
+  /* Same background for essentials, tabs and urlbar */
+  .tab-background {
+     box-shadow: none !important;
+     backdrop-filter: blur(10px) !important;
+  }
+}
+
+/* Pinned & unpinned tabs */ 
+#vertical-pinned-tabs-container, #tabbrowser-arrowscrollbox {
+  .tabbrowser-tab:not(:last-child) {
+    padding-bottom: 4px !important;
+  }
+
+  .tab-label-container {
+    opacity: 0.8 !important;
+  }
+  
+  
+
+  /* Same background for essentials, tabs and urlbar */
+  .tab-background {
+    box-shadow: none !important;
+
+    &[selected] {
+      background: light-dark(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)) !important;
+    }
+  }
+  
+  /* Remove background from glance tabs */
+  .tabbrowser-tab[zen-glance-tab="true"] {
+    .tab-background {
+      background: none !important;
+      backdrop-filter: none !important;
+    }
+  }
+}
+
+/* Bookmarks toolbar items */
+#personal-bookmarks {
+   opacity: 0.8 !important;
+
+  .toolbarbutton-text {
+    /*font-size: 1.15em !important;
+    font-weight: 500 !important;*/
+  }
+
+  .toolbarbutton-icon {
+    margin-right: 5px !important;
+
+    /* White folder icon */
+    &[type="menu"] {
+      filter: brightness(100) !important;
+    }
+  }
+}
+
+/* Hide extensions puzzle button and extension buttons unless hovered
+#nav-bar:not(:has(*[open="true"])) {
+  #unified-extensions-button, .unified-extensions-item {
+    transition: opacity 0.25s !important;
+  }
+
+  &:not(:hover) {
+    #unified-extensions-button, .unified-extensions-item {
+      opacity: 0 !important;
+    }
+  }
+}*/
+
+/* Hide sidebar buttons unless hovered
+#navigator-toolbox {
+  #zen-expand-sidebar-button, #zen-sidebar-icons-wrapper {
+    transition: opacity 0.25s !important;
+  }
+  
+  &:not(:hover) {
+    #zen-expand-sidebar-button, #zen-sidebar-icons-wrapper {
+      opacity: 0 !important;
+    }
+  }
+}*/
+
+/* URL bar */
+#urlbar {
+  box-shadow: none !important;
+  padding-bottom: 2px !important;
+
+  /* Same background for essentials, tabs and urlbar */
+  &:not([breakout-extend=true]) { /* Unless opened */
+    border-radius: 10px !important;
+    
+    #urlbar-background {
+      background: light-dark(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)) !important;
+    }
+  }
+  
+  /* Hide 'Search with Google or enter address' placeholder */
+  #urlbar-input::placeholder {
+    opacity: 0 !important;
+  }
+  
+  /* Hide identity box (e.g. extension label) unless hovered */
+  #identity-box:not(:hover) {
+    max-width: 10px;
+    opacity: 0;
+  }
+
+  /* Show container icon & label only when hovered */
+  #userContext-icons {
+    transition: opacity 0.5s !important;
+  }
+  &:not(:hover) {
+      #userContext-icons {
+        opacity: 0 !important;
+      }
+  }
+  
+  /* Hide shield icon unless hovered */
+  #tracking-protection-icon-container:not(:hover) {
+    max-width: 10px;
+    opacity: 0 !important;
+  }
+  
+  /* Hide bookmark icon */
+  #star-button-box {
+    display: none !important;
+  }
+  
+  /* Animated border when urlbar is focused */
+  &[focused]:not([breakout-extend]) {
+    border: 2px solid rgba(235,	188, 186, 0.4);
+    animation: urlbar-focused-border 2s infinite alternate;
+    
+    /* Hide caret, but only on home page (hacky) */
+    &:has(#identity-box.extensionPage), &:has(#identity-box.localResource) {    
+      caret-color: transparent !important;
+    }
+  }
+  
+  &:-moz-window-inactive {
+    #urlbar-input {
+      opacity: 0.75 !important;
+    }
+  }
+}
+
+@keyframes urlbar-focused-border {
+  from { border-color: rgba(255, 255, 255, 0.4); }
+  to { border-color: rgba(255, 255, 255, 0.5); }
+}
+
+/* Webview */
+.browserSidebarContainer {
+  box-shadow: none !important;
+}
+
+/* Fix: reduce gap between sidebar and webview */
+#zen-sidebar-splitter {
+  min-width: 2px !important;
+}
+
+/* Fix: increase gap between sidebar and window border */
+#TabsToolbar {
+  margin-left: 2px !important;
+}
+
+/* --- EXPERIMENTS --- */
+
+/* Integrated navbar & webview */
+@media not (-moz-bool-pref:"zen.view.compact") {
+  #browser {
+    --userchrome-navbar-background-color: rgba(0, 0, 0, 0.3);
+    --userchrome-navbar-backdrop-filter: blur(10px) saturate(1.5);
+    
+    &:has(#navigator-toolbox[zen-expanded="true"]) {
+      &:not(:has(.zen-split-view-splitter)) {
+        --urlbar-min-height: 28px; /* for Super Url Bar */
+
+        #nav-bar {
+          --zen-toolbar-height: 36px;
+
+          background-color: var(--userchrome-navbar-background-color) !important;
+          border-radius: var(--zen-border-radius) var(--zen-border-radius) 0px 0px;
+          padding-left: var(--zen-element-separation) !important;
+          margin-right: var(--zen-element-separation);
+          margin-top: var(--zen-element-separation);
+          margin-left: 1px; /* fix */
+
+          &:not([urlbar-exceeds-toolbar-bounds]) {
+            backdrop-filter: var(--userchrome-navbar-backdrop-filter);
+          }
+        }
+        
+        .browserContainer, .browserSidebarContainer {
+          border-radius: 0px 0px var(--zen-border-radius) var(--zen-border-radius) !important;
+        }
+
+        .browserSidebarContainer {
+          background: var(--userchrome-navbar-background-color);
+          backdrop-filter: var(--userchrome-navbar-backdrop-filter);
+        }
+      }
+    }
+  }
+}
