@@ -153,6 +153,7 @@
   width: 100% !important;
   margin-inline: 0px !important;
   align-self: center !important;
+  
 }
 
 /* changing the appearance of urlbar and popup */
@@ -162,6 +163,7 @@
   border: 1px solid rgba(0,0,0, 0.1) !important;
   border-radius: 6px !important;
   color: #262626
+    
 }
 #urlbar-input {
   /*text-align: center !important;*/
